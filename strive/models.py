@@ -25,14 +25,28 @@ class Post(models.Model):
 	comment = models.CharField(max_length = 500)
 	#NEED TO ADD AN IMAGE FIELD
 
+	def __unicode__(self):
+		return unicode(self.comment)
+
+class Tip(models.Model):
+	leading_post = models.ForeignKey(Post)
+	author = models.ForeignKey(Athlete)
+	created = models.DateTimeField(auto_now_add = True)
+	comment = models.CharField(max_length = 200)
+
+
 class AthleteAdmin(admin.ModelAdmin):
 	list_display = ["first_name", "last_name", "email", "password", "gender", "sport"]
 
 class PostAdmin(admin.ModelAdmin):
 	list_display = ["author", "created", "category", "comment"]
 
+class TipAdmin(admin.ModelAdmin):
+	list_display = ["author", "leading_post", "created", "comment"]
+
 
 
 admin.site.register(Athlete, AthleteAdmin)
 admin.site.register(Post, PostAdmin)
+admin.site.register(Tip, TipAdmin)
 
