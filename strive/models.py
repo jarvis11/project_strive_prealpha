@@ -34,6 +34,13 @@ class Tip(models.Model):
 	created = models.DateTimeField(auto_now_add = True)
 	comment = models.CharField(max_length = 200)
 
+	def __unicode__(self):
+		return unicode(self.comment)
+
+class Like(models.Model):
+	liked_tip = models.OneToOneField(Tip)
+	liker = models.OneToOneField(Athlete)
+
 
 class AthleteAdmin(admin.ModelAdmin):
 	list_display = ["first_name", "last_name", "email", "password", "gender", "sport"]
@@ -44,9 +51,13 @@ class PostAdmin(admin.ModelAdmin):
 class TipAdmin(admin.ModelAdmin):
 	list_display = ["author", "leading_post", "created", "comment"]
 
+class LikeAdmin(admin.ModelAdmin):
+	list_display = ["liker", "liked_tip"]
+
 
 
 admin.site.register(Athlete, AthleteAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Tip, TipAdmin)
+admin.site.register(Like, LikeAdmin)
 
