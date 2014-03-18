@@ -17,6 +17,12 @@ class Athlete(models.Model):
 	def __unicode__(self):
 		return unicode(self.first_name)
 
+class Like(models.Model):
+	liker = models.ForeignKey(Athlete)
+
+	def __unicode__(self):
+		return unicode(self.liker)
+
 class Post(models.Model):
 	author = models.ForeignKey(Athlete)
 	created = models.DateTimeField(auto_now_add = True)
@@ -24,6 +30,7 @@ class Post(models.Model):
 	#taggedAthletes = models.ManyToManyField(Athlete)
 	comment = models.CharField(max_length = 500)
 	#NEED TO ADD AN IMAGE FIELD
+	likes = models.ManyToManyField(Like, blank = True)
 
 	def __unicode__(self):
 		return unicode(self.comment)
@@ -33,13 +40,14 @@ class Tip(models.Model):
 	author = models.ForeignKey(Athlete)
 	created = models.DateTimeField(auto_now_add = True)
 	comment = models.CharField(max_length = 200)
+	likes = models.ManyToManyField(Like, blank = True)
 
 	def __unicode__(self):
 		return unicode(self.comment)
 
-class Like(models.Model):
-	liked_tip = models.OneToOneField(Tip)
-	liker = models.OneToOneField(Athlete)
+
+
+
 
 
 class AthleteAdmin(admin.ModelAdmin):
@@ -52,7 +60,7 @@ class TipAdmin(admin.ModelAdmin):
 	list_display = ["author", "leading_post", "created", "comment"]
 
 class LikeAdmin(admin.ModelAdmin):
-	list_display = ["liker", "liked_tip"]
+	list_display = ["liker"]
 
 
 
