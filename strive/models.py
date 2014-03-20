@@ -19,6 +19,17 @@ class Image(models.Model):
 	def __unicode__(self):
 		return unicode(self.created)
 
+class Location(models.Model):
+	latitude = models.FloatField()
+	longitude = models.FloatField()
+	name = models.CharField(max_length = 50)
+	description = models.CharField(max_length = 500)
+	image = models.OneToOneField(Image, blank = True, null = True)
+	address = models.CharField(max_length = 100)
+
+	def __unicode__(self):
+		return unicode(self.name)
+
 # Strive specific models		
 
 class Athlete(models.Model):
@@ -35,7 +46,6 @@ class Athlete(models.Model):
 		return unicode(self.first_name)
 
 
-
 class Post(models.Model):
 	author = models.ForeignKey(Athlete)
 	created = models.DateTimeField(auto_now_add = True)
@@ -44,6 +54,7 @@ class Post(models.Model):
 	comment = models.CharField(max_length = 500)
 	image = models.OneToOneField(Image, blank = True, null = True)
 	likes = models.ManyToManyField(Like, blank = True)
+	checkin = models.OneToOneField(Location, blank = True, null = True)
 
 	def __unicode__(self):
 		return unicode(self.comment)
@@ -62,7 +73,8 @@ class Tip(models.Model):
 
 
 
-
+class LikeAdmin(admin.ModelAdmin):
+	list_display = ["liker"]
 
 class AthleteAdmin(admin.ModelAdmin):
 	list_display = ["first_name", "last_name", "email", "password", "gender", "sport", "profile_pic"]
@@ -73,13 +85,15 @@ class PostAdmin(admin.ModelAdmin):
 class TipAdmin(admin.ModelAdmin):
 	list_display = ["author", "leading_post", "created", "comment"]
 
-class LikeAdmin(admin.ModelAdmin):
-	list_display = ["liker"]
+class LocationAdmin(admin.ModelAdmin):
+	list_display = ["latitude", "longitude", "name", "description", "address"]
 
 
 
+
+admin.site.register(Like, LikeAdmin)
 admin.site.register(Athlete, AthleteAdmin)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Tip, TipAdmin)
-admin.site.register(Like, LikeAdmin)
+admin.site.register(Location, LocationAdmin)
 
