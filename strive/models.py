@@ -41,6 +41,7 @@ class Athlete(models.Model):
 	gender = models.CharField(max_length = 6)
 	profile_pic = models.OneToOneField(Image, blank = True, null = True)
 	sport = models.CharField(max_length = 45)
+	following = models.ManyToManyField('Athlete', related_name = "followers", blank = True, null = True)
 
 	def __unicode__(self):
 		return unicode(self.first_name)
